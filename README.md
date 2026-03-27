@@ -10,7 +10,7 @@ Este repositorio contiene el proyecto final desarrollado para la asignatura de E
 El desarrollo del clúster se divide en hitos, siendo cada uno una tarea entregable:
 
 *   **Hito 1: Minero Secuencial:** Implementación base en Python de un minero de Prueba de Trabajo (Proof of Work) usando SHA-256 en un solo núcleo, estableciendo las métricas iniciales de rendimiento (H/s).
-*   
+  
 *   **Hito 2: Perfilado de Código (Profiling):** Análisis del rendimiento interno con `cProfile` y monitorización del sistema con `htop` para identificar los cuellos de botella y justificar la necesidad de escalar a múltiples núcleos.
   
 *   **Hito 3: Paralelización Estática (MPI):** Integración de OpenMPI y `mpi4py` para lanzar procesos paralelos. El espacio de búsqueda del *nonce* se divide matemáticamente entre los núcleos disponibles para exprimir el 100% de la CPU local.
