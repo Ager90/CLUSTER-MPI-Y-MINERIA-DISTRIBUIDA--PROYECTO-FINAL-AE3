@@ -18,3 +18,19 @@ El desarrollo del clúster se divide en hitos, siendo cada uno una tarea entrega
 *   **Hito 4: Sincronización y "Parada Temprana":** Implementación de comunicación no bloqueante (`Iprobe` y `bcast`). Cuando un proceso encuentra la solución, avisa al resto del clúster para detener la ejecución inmediatamente y no desperdiciar recursos.
   
 *   **Hito 5: Expansión de la Red y Segundo Nodo:** Transición desde una ejecución local a una infraestructura distribuida real mediante la clonación de la máquina virtual original para crear un segundo nodo (Worker). Esta fase incluye la creación de una red privada en VirtualBox, la asignación de direcciones IP estáticas mediante Netplan, y la configuración de la resolución por nombre en `/etc/hosts` para garantizar una comunicación estable entre las máquinas.
+
+---
+ 
+## 🖧 Arquitectura del Clúster
+ 
+| Nodo | Hostname | IP | Slots MPI | Rol | H/s |
+|------|----------|----|-----------|-----|-----|
+| 0 | `master` | 192.168.50.10 | 2 | Master + Worker | ~2.05 MH/s |
+| 1 | `worker1` | 192.168.50.11 | 2 | Worker | ~1.25 MH/s |
+| 2 | `worker2` | 192.168.50.12 | 2 | Worker | ~1.25 MH/s |
+ 
+- **Red interna VirtualBox** (adaptador 2) + NAT para Internet (adaptador 1)
+- **NFS** exportado desde master, montado en workers → directorio `/mnt/nfs` compartido
+- **SSH sin contraseña** desde master → workers (necesario para que `mpirun` lance procesos remotos)
+- **Resolución por nombre** via `/etc/hosts` en los 3 nodos
+---
