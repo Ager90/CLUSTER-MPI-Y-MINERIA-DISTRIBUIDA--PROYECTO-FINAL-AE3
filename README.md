@@ -1,4 +1,4 @@
-# CLUSTER MPI Y MINERÍA DISTRIBUIDA -- PROYECTO FINAL AE3
+# Clúster MPI y Minería SHA-256 Distribuida -- PROYECTO FINAL AE3
 
 Este repositorio contiene el proyecto final desarrollado para la asignatura de Estructura de Computadores, Paralelismo y Sistemas Distribuidos. El objetivo del proyecto es construir y optimizar un clúster MPI para minería distribuida.
 
