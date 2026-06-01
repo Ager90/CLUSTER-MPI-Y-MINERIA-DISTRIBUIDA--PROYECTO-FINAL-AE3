@@ -19,6 +19,20 @@ El desarrollo del clúster se divide en hitos, siendo cada uno una tarea entrega
   
 *   **Hito 5: Expansión de la Red y Segundo Nodo:** Transición desde una ejecución local a una infraestructura distribuida real mediante la clonación de la máquina virtual original para crear un segundo nodo (Worker). Esta fase incluye la creación de una red privada en VirtualBox, la asignación de direcciones IP estáticas mediante Netplan, y la configuración de la resolución por nombre en `/etc/hosts` para garantizar una comunicación estable entre las máquinas.
 
+
+##  Hitos del Proyecto
+ 
+El desarrollo se estructuró en 6 hitos acumulativos:
+ 
+| Hito | Descripción | Tecnología clave | Resultado |
+|------|-------------|-----------------|-----------|
+| **Hito 1** | Minero secuencial en Python | `hashlib`, `argparse` | 1.28 MH/s, 1 núcleo al 100% |
+| **Hito 2** | Perfilado de código | `cProfile` | 97% del tiempo en SHA-256 → p=0.97 |
+| **Hito 3** | Paralelización estática MPI | `mpi4py`, `mpirun` | 3.90 MH/s con 2 procesos |
+| **Hito 4** | Parada temprana no bloqueante | `Iprobe`, `isend`, `bcast` | Todos los procesos terminan limpiamente |
+| **Hito 5** | Expansión a 2 nodos | VirtualBox, Netplan, `/etc/hosts` | Red interna funcional, ping 0% pérdida |
+| **Hito Final** | Clúster completo (3 nodos) | NFS, SSH, hostfile MPI | 6.50 MH/s · ×3.04 speedup distribuido |
+ 
 ---
  
 ## 🖧 Arquitectura del Clúster
