@@ -5,21 +5,6 @@ Este repositorio contiene el proyecto final desarrollado para la asignatura de E
 
 ***
 
-## Fases del Proyecto
-
-El desarrollo del clúster se divide en hitos, siendo cada uno una tarea entregable:
-
-*   **Hito 1: Minero Secuencial:** Implementación base en Python de un minero de Prueba de Trabajo (Proof of Work) usando SHA-256 en un solo núcleo, estableciendo las métricas iniciales de rendimiento (H/s).
-  
-*   **Hito 2: Perfilado de Código (Profiling):** Análisis del rendimiento interno con `cProfile` y monitorización del sistema con `htop` para identificar los cuellos de botella y justificar la necesidad de escalar a múltiples núcleos.
-  
-*   **Hito 3: Paralelización Estática (MPI):** Integración de OpenMPI y `mpi4py` para lanzar procesos paralelos. El espacio de búsqueda del *nonce* se divide matemáticamente entre los núcleos disponibles para exprimir el 100% de la CPU local.
-  
-*   **Hito 4: Sincronización y "Parada Temprana":** Implementación de comunicación no bloqueante (`Iprobe` y `bcast`). Cuando un proceso encuentra la solución, avisa al resto del clúster para detener la ejecución inmediatamente y no desperdiciar recursos.
-  
-*   **Hito 5: Expansión de la Red y Segundo Nodo:** Transición desde una ejecución local a una infraestructura distribuida real mediante la clonación de la máquina virtual original para crear un segundo nodo (Worker). Esta fase incluye la creación de una red privada en VirtualBox, la asignación de direcciones IP estáticas mediante Netplan, y la configuración de la resolución por nombre en `/etc/hosts` para garantizar una comunicación estable entre las máquinas.
-
-
 ##  Hitos del Proyecto
  
 El desarrollo se estructuró en 6 hitos acumulativos:
@@ -34,6 +19,39 @@ El desarrollo se estructuró en 6 hitos acumulativos:
 | **Hito Final** | Clúster completo (3 nodos) | NFS, SSH, hostfile MPI | 6.50 MH/s · ×3.04 speedup distribuido |
  
 ---
+
+
+## ⚙️ Instalación y Ejecución
+ 
+### Requisitos
+ 
+```bash
+sudo apt update && sudo apt install -y python3 python3-pip openmpi-bin libopenmpi-dev
+pip3 install mpi4py
+```
+ 
+### 1. Ejecución secuencial
+ 
+```bash
+python3 src/minero_secuencial.py --dificultad 4 --max 5000000
+```
+ 
+### 2. MPI local (múltiples procesos en un nodo)
+ 
+```bash
+# Con parada temprana (recomendado)
+mpirun -n 4 python3 src/minero_mpi_optimizado.py --dificultad 4 --max 5000000
+```
+ 
+### 3. MPI distribuido (clúster completo)
+ 
+```bash
+# Desde master, con NFS montado y SSH configurado
+mpirun -hostfile src/hosts -np 6 python3 /mnt/nfs/minero.py \
+    --dificultad 5 --max 50000000
+```
+---
+
  
 ## 🖧 Arquitectura del Clúster
  
@@ -47,4 +65,4 @@ El desarrollo se estructuró en 6 hitos acumulativos:
 - **NFS** exportado desde master, montado en workers → directorio `/mnt/nfs` compartido
 - **SSH sin contraseña** desde master → workers (necesario para que `mpirun` lance procesos remotos)
 - **Resolución por nombre** via `/etc/hosts` en los 3 nodos
----
+
